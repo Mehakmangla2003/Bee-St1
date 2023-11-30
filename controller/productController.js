@@ -15,24 +15,22 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
-    // Pagination
+
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    // Sorting
+
     const sortField = req.query.sortBy || 'name';
     const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1;
     const sortOptions = { [sortField]: sortOrder };
 
-    // Filtering
+  
     const filterOptions = {};
     if (req.query.search) {
       filterOptions.name = { $regex: new RegExp(req.query.search, 'i') };
     }
-    // You can add more filters as needed
-
-    // Query
+   
     const products = await Product.find(filterOptions)
       .sort(sortOptions)
       .skip(skip)
